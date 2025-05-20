@@ -1,0 +1,73 @@
+﻿@page "/"
+@rendermode InteractiveServer
+@using Arboles_De_Busqueda_Binaria.models
+
+
+<div class="container mt-5">
+    <h3 class="text-center">Árbol Binario Visual</h3>
+
+    @if (Raiz != null)
+    {
+        <TreeNode Nodo="Raiz" />
+    }
+    else
+    {
+        <p class="text-muted text-center">El árbol está vacío</p>
+    }
+
+    <div class="mt-4 text-center">
+        <input type="number" @bind="Valor" placeholder="Valor" class="form-control d-inline-block w-auto me-2" />
+        <button class="btn btn-success me-2" @onclick="Agregar">Agregar</button>
+        <button class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
+    </div>
+</div>
+
+@code {
+    private NodoArbol Raiz;
+    private int Valor;
+
+    private void Agregar()
+    {
+        Raiz = Insertar(Raiz, Valor);
+    }
+
+    private void Eliminar()
+    {
+        Raiz = EliminarNodo(Raiz, Valor);
+    }
+
+    private NodoArbol Insertar(NodoArbol nodo, int valor)
+    {
+        if (nodo == null) return new NodoArbol(valor);
+        if (valor < nodo.Valor) nodo.Izquierda = Insertar(nodo.Izquierda, valor);
+        else if (valor > nodo.Valor) nodo.Derecha = Insertar(nodo.Derecha, valor);
+        return nodo;
+    }
+
+    private NodoArbol EliminarNodo(NodoArbol nodo, int valor)
+    {
+        if (nodo == null) return null;
+
+        if (valor < nodo.Valor)
+            nodo.Izquierda = EliminarNodo(nodo.Izquierda, valor);
+        else if (valor > nodo.Valor)
+            nodo.Derecha = EliminarNodo(nodo.Derecha, valor);
+        else
+        {
+            if (nodo.Izquierda == null) return nodo.Derecha;
+            if (nodo.Derecha == null) return nodo.Izquierda;
+
+            var sucesor = EncontrarMinimo(nodo.Derecha);
+            nodo.Valor = sucesor.Valor;
+            nodo.Derecha = EliminarNodo(nodo.Derecha, sucesor.Valor);
+        }
+
+        return nodo;
+    }
+
+    private NodoArbol EncontrarMinimo(NodoArbol nodo)
+    {
+        while (nodo.Izquierda != null) nodo = nodo.Izquierda;
+        return nodo;
+    }
+}
