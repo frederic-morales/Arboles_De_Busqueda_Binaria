@@ -13,6 +13,7 @@ namespace Arboles_De_Busqueda_Binaria.services
 
         private NodoArbol InsertarRecursivo(NodoArbol nodo, int valor)
         {
+            //Si llegamos a un nodo null, significa que encontramos un lugar vacío, y allí insertamos el nuevo nodo.
             if (nodo == null)
                 return new NodoArbol(valor);
 
@@ -20,9 +21,10 @@ namespace Arboles_De_Busqueda_Binaria.services
                 nodo.Izquierda = InsertarRecursivo(nodo.Izquierda, valor);
             else if (valor > nodo.Valor)
                 nodo.Derecha = InsertarRecursivo(nodo.Derecha, valor);
-
+            
             return nodo;
         }
+
 
         public void Eliminar(int valor)
         {
@@ -37,9 +39,10 @@ namespace Arboles_De_Busqueda_Binaria.services
                 nodo.Izquierda = EliminarRecursivo(nodo.Izquierda, valor);
             else if (valor > nodo.Valor)
                 nodo.Derecha = EliminarRecursivo(nodo.Derecha, valor);
-            else
+
+            else //if(valor == nodo.Valor)
             {
-                if (nodo.Izquierda == null) return nodo.Derecha;
+                if (nodo.Izquierda == null) return nodo.Derecha; 
                 if (nodo.Derecha == null) return nodo.Izquierda;
 
                 var sucesor = EncontrarMinimo(nodo.Derecha);
@@ -52,7 +55,7 @@ namespace Arboles_De_Busqueda_Binaria.services
 
         private NodoArbol EncontrarMinimo(NodoArbol nodo)
         {
-            while (nodo.Izquierda != null)
+            while (nodo.Izquierda != null) 
                 nodo = nodo.Izquierda;
             return nodo;
         }
