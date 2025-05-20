@@ -1,14 +1,14 @@
 ﻿@page "/"
 @rendermode InteractiveServer
 @using Arboles_De_Busqueda_Binaria.models
-
+@using Arboles_De_Busqueda_Binaria.services
 
 <div class="container mt-5">
     <h3 class="text-center">Árbol Binario Visual</h3>
 
-    @if (Raiz != null)
+    @if (Arbol.Raiz != null)
     {
-        <TreeNode Nodo="Raiz" />
+        <TreeNode Nodo="Arbol.Raiz" />
     }
     else
     {
@@ -23,51 +23,17 @@
 </div>
 
 @code {
-    private NodoArbol Raiz;
+   
+    private ArbolBinarioBusqueda Arbol = new();
     private int Valor;
 
     private void Agregar()
     {
-        Raiz = Insertar(Raiz, Valor);
+        Arbol.Insertar(Valor);
     }
 
     private void Eliminar()
     {
-        Raiz = EliminarNodo(Raiz, Valor);
-    }
-
-    private NodoArbol Insertar(NodoArbol nodo, int valor)
-    {
-        if (nodo == null) return new NodoArbol(valor);
-        if (valor < nodo.Valor) nodo.Izquierda = Insertar(nodo.Izquierda, valor);
-        else if (valor > nodo.Valor) nodo.Derecha = Insertar(nodo.Derecha, valor);
-        return nodo;
-    }
-
-    private NodoArbol EliminarNodo(NodoArbol nodo, int valor)
-    {
-        if (nodo == null) return null;
-
-        if (valor < nodo.Valor)
-            nodo.Izquierda = EliminarNodo(nodo.Izquierda, valor);
-        else if (valor > nodo.Valor)
-            nodo.Derecha = EliminarNodo(nodo.Derecha, valor);
-        else
-        {
-            if (nodo.Izquierda == null) return nodo.Derecha;
-            if (nodo.Derecha == null) return nodo.Izquierda;
-
-            var sucesor = EncontrarMinimo(nodo.Derecha);
-            nodo.Valor = sucesor.Valor;
-            nodo.Derecha = EliminarNodo(nodo.Derecha, sucesor.Valor);
-        }
-
-        return nodo;
-    }
-
-    private NodoArbol EncontrarMinimo(NodoArbol nodo)
-    {
-        while (nodo.Izquierda != null) nodo = nodo.Izquierda;
-        return nodo;
+        Arbol.Eliminar(Valor);
     }
 }
