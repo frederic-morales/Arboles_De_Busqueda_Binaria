@@ -3,30 +3,62 @@
 @inherits LayoutComponentBase
 
 <style>
+    .tree-node {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        margin: 1rem;
+    }
+
+    .children {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        position: relative;
+    }
+
     .node {
         width: 50px;
         height: 50px;
         font-weight: bold;
         font-size: 1rem;
         text-align: center;
+        border: 2px solid #0d6efd;
+        background-color: #0d6efd;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        z-index: 1;
     }
+
+    .line {
+        height: 20px;
+        width: 2px;
+        background-color: #000;
+        position: absolute;
+        top: 50px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
     .node-placeholder {
         width: 60px;
         height: 50px;
-        margin-left: 20px;
-        margin-right: 20px;
+        margin: 1rem;
     }
 </style>
 
-
-<div class="d-flex flex-column align-items-center">
-    <div class="node bg-primary text-white rounded-circle d-flex align-items-center justify-content-center mb-2">
-        @Nodo.Valor
-    </div>
+<div class="tree-node">
+    <div class="node">@Nodo.Valor</div>
 
     @if (Nodo.Izquierda != null || Nodo.Derecha != null)
     {
-        <div class="d-flex justify-content-around w-100">
+        <div class="line"></div>
+        <div class="children">
             @if (Nodo.Izquierda != null)
             {
                 <TreeNode Nodo="Nodo.Izquierda" />
@@ -35,6 +67,7 @@
             {
                 <div class="node-placeholder"></div>
             }
+
             @if (Nodo.Derecha != null)
             {
                 <TreeNode Nodo="Nodo.Derecha" />
